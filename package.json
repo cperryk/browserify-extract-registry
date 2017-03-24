@@ -1,0 +1,17 @@
+{
+  "name": "browserify-extract-registry",
+  "version": "0.0.1",
+  "description": "Browserify plugin to extract a bundle's module-deps registry to a file.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Browserify"
+  ],
+  "author": "Chris Kirk",
+  "license": "ISC",
+  "dependencies": {
+    "through2": "^2.0.3"
+  }
+}
