@@ -1,6 +1,6 @@
 {
   "name": "browserify-extract-registry",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Browserify plugin to extract a bundle's module-deps registry to a file.",
   "main": "index.js",
   "scripts": {
