@@ -1,21 +1,22 @@
-const through = require('through2');
+const through = require('through2'),
+  fs = require('fs-extra');
 
 /**
  * From a module-deps stream, build an object mapping each dependency
  * ID to its dependents, and write it to a destination.
- * @param {String} dest - Destination
+ * @param {Object} opts
+ * @param {String} opts.outputFile Path to output file
  * @return {Object} - Through object
  */
 function exportRegistry(opts) {
-  const opts = opts || {},
-    outputFile = opts.outputFile || './bundle-registry.json',
+  const outputFile = opts && opts.outputFile || './bundle-registry.json',
     registry = {};
 
   return through.obj((row, enc, next) => {
-    registry[row.id] = Object.keys(row.deps).map(key => rows.deps[key]);
+    registry[row.id] = Object.keys(row.deps).map(key => row.deps[key]);
     next(null, row);
   })
-  .on('end', () => fs.outputJson(outputFile, registry));
+  .on('end', () => fs.outputJsonSync(outputFile, registry));
 }
 
 
@@ -26,7 +27,7 @@ function exportRegistry(opts) {
  * @param  {string}  opts.outputFile File path of output file. Default: './bundle-registry.json'
  */
 function extractRegistryPlugin(b, opts) {
-  b.pipeline.get('emit-deps').push(exportRegistry(opts.outputFile));
+  b.pipeline.get('emit-deps').push(exportRegistry(opts));
 }
 
 module.exports = extractRegistryPlugin;

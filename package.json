@@ -4,7 +4,7 @@
   "description": "Browserify plugin to extract a bundle's module-deps registry to a file.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/test.js"
   },
   "keywords": [
     "Browserify"
@@ -12,6 +12,16 @@
   "author": "Chris Kirk",
   "license": "ISC",
   "dependencies": {
+    "chai": "^3.5.0",
+    "fs-extra": "^2.1.2",
     "through2": "^2.0.3"
+  },
+  "devDependencies": {
+    "bl": "^1.2.0",
+    "browserify": "^14.1.0",
+    "eslint": "^3.18.0",
+    "fs-extra": "^2.1.2",
+    "mocha": "^3.2.0",
+    "string-to-stream": "^1.1.0"
   }
 }
