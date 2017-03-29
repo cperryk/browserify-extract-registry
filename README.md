@@ -11,7 +11,7 @@ Export a Browserify bundle's "dependency registry," a mapping of modules to thei
 ```
 // main.js
 require('./a');
-require('./c');
+require('./b');
 ```
 
 ```
@@ -43,8 +43,8 @@ This will result in a `registry.json` like the following. (Note: Browserify assi
 
 ```
 {
-  "1": [2, 3, 4], // "main" requires "a" and "c"
-  "2": [4] // "a" requires "b"
+  "1": [2, 3], // "main" requires "a" and "b"
+  "2": [4] // "a" requires "c"
   "3": [] // "b" has no deps
   "4": [] // "c" has no deps
 }
