@@ -16,7 +16,11 @@ function exportRegistry(opts) {
     registry[row.id] = Object.keys(row.deps).map(key => row.deps[key]);
     next(null, row);
   })
-  .on('end', () => fs.outputJsonSync(outputFile, registry));
+  .on('end', () => {
+    if (opts.outputFile) {
+      fs.outputJsonSync(outputFile, registry);
+    }
+  });
 }
 
 

@@ -1,3 +1,4 @@
+'use strict';
 const expect = require('chai').expect,
   fs = require('fs-extra'),
   browserify = require('browserify'),
@@ -6,29 +7,40 @@ const expect = require('chai').expect,
   lib = require('./../index');
 
 describe('browserify-extract-registry', function () {
+  const registryPath = path.join(__dirname, 'out.json');
 
-  it ('Exports a registry file', function (done) {
-
-    const registryPath = path.join(__dirname, 'out.json'),
-      b = browserify({entries: [path.join(__dirname, 'entry.js')]})
-        .plugin(lib, {
-          outputFile: registryPath
-        });
-
+  beforeEach(function () {
     fs.removeSync(registryPath);
+  });
+  afterEach(function () {
+    fs.removeSync(registryPath);
+  });
 
-    b.bundle()
+  it ('Exports the correct registry file to the specified path', function (done) {
+    browserify()
+      .add(path.join(__dirname, 'entry.js'))
+      .plugin(lib, {outputFile: registryPath})
+      .bundle()
       .pipe(bl((err) => {
         const registry = fs.readJsonSync(path.join(__dirname, 'out.json'));
 
+        sortDeps(registry);
         expect(err).to.be.null;
-
-        expect(registry[1]).to.have.lengthOf(2);
-        expect(registry[1]).to.include.members([2, 3]);
-        expect(registry[2]).to.be.empty;
-        expect(registry[3]).to.deep.equal([2]);
-        expect(registry[4]).to.deep.equal([1]);
+        expect(registry).to.deep.equal({
+          1: [2, 3],
+          2: [],
+          3: [2],
+          4: [1]
+        });
         done();
       }));
   });
 });
+
+/**
+ * Sort a registry's dependency arrays for easier testing.
+ * @param {Object} registry
+ */
+function sortDeps(registry) {
+  Object.keys(registry).forEach(key => registry[key].sort());
+}
