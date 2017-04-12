@@ -2,7 +2,6 @@
 const expect = require('chai').expect,
   fs = require('fs-extra'),
   browserify = require('browserify'),
-  bl = require('bl'),
   path = require('path'),
   sinon = require('sinon'),
   util = require('./../lib/util');
