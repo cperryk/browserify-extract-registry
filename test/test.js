@@ -19,11 +19,11 @@ describe('browserify-extract-registry', function () {
   let sandbox;
 
   beforeEach(function () {
-    fs.removeSync(registryPath);
     sandbox = sinon.sandbox.create();
+    sandbox.stub(fs, 'outputJsonSync');
+    fs.outputJsonSync.callsFake(()=>{});
   });
   afterEach(function () {
-    fs.removeSync(registryPath);
     sandbox.restore();
   });
 
@@ -35,10 +35,10 @@ describe('browserify-extract-registry', function () {
         sortDeps: true
       })
       .bundle((err) => {
-        const registry = fs.readJsonSync(path.join(__dirname, 'out.json'));
-
         expect(err).to.be.null;
-        expect(registry).to.deep.equal(expectedRegistry);
+        expect(fs.outputJsonSync.calledOnce).to.equal(true);
+        expect(fs.outputJsonSync.firstCall.args[0]).to.equal(path.join(__dirname, 'out.json'));
+        expect(fs.outputJsonSync.firstCall.args[1]).to.deep.equal(expectedRegistry);
         done();
       });
   });
